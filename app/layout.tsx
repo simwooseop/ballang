@@ -12,8 +12,8 @@ export default function HTMLLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`antialiased`}>{children}</body>
+    <html lang="ko">
+      <body>{children}</body>
     </html>
   );
 }
