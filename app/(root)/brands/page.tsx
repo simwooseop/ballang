@@ -25,7 +25,7 @@ async function BrandsPage({
         </p>
       </Link>
 
-      <ul className="text-sm text-gray-500 gap-y-5 mb-10 text-center grid grid-cols-6 w-[50vw]">
+      <ul className="text-sm text-gray-500 gap-y-5 mb-10 text-center grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 w-[50vw]">
         {brands?.map((brand) => (
           <Link
             className={
