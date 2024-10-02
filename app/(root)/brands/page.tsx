@@ -1,30 +1,29 @@
-"use client";
-import { getBrands } from "@/api/ballang.api";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { Brand } from "@/types/ballang.type";
+import { getBrands } from "@/api/ballang.api";
 import BrandProductList from "../_components/BrandProductList";
 
-function BrandsPage() {
-  const params = useSearchParams();
-  const brandId = params.get("brandId");
+async function BrandsPage({
+  searchParams,
+}: {
+  searchParams: { brandId: string | undefined };
+}) {
+  const brandId = searchParams.brandId;
 
-  const { data: brands } = useQuery({
-    queryKey: ["brands"],
-    queryFn: () => getBrands(),
-  });
-
+  const brands = (await getBrands()) as Brand[];
   return (
     <main className="flex flex-col items-center">
       <h2 className={"pt-32 text-3xl font-bold"}>Brands</h2>
-      <p
-        className={
-          "mt-8 text-sm mb-5 " +
-          (brandId === null ? "font-bold" : "font-normal")
-        }
-      >
-        ALL
-      </p>
+      <Link href="/brands">
+        <p
+          className={
+            "mt-8 text-sm mb-5 " +
+            (brandId === undefined ? "font-bold" : "font-normal")
+          }
+        >
+          ALL
+        </p>
+      </Link>
 
       <ul className="text-sm text-gray-500 gap-y-5 mb-10 text-center grid grid-cols-6 w-[50vw]">
         {brands?.map((brand) => (
@@ -41,7 +40,7 @@ function BrandsPage() {
         ))}
       </ul>
 
-      <BrandProductList />
+      <BrandProductList brandId={brandId} />
     </main>
   );
 }

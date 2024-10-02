@@ -1,10 +1,13 @@
 "use client";
-import { ballangAPI } from "@/api/ballang.api";
+import { ballangClient } from "@/api/ballang.api";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
 import React, { ComponentProps, useRef } from "react";
 
 function SignUpPage() {
   const router = useRouter();
+
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const emailInputRef = useRef<HTMLInputElement | null>(null);
   const passwordInputRef = useRef<HTMLInputElement | null>(null);
@@ -28,7 +31,8 @@ function SignUpPage() {
       passwordConfirm,
     };
 
-    await ballangAPI.post("/auth/sign-up", data);
+    await ballangClient.post("/auth/sign-up", data);
+    setIsLoggedIn(true);
     router.replace("/");
   };
 

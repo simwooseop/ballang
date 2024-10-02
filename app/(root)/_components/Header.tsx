@@ -3,12 +3,21 @@ import Link from "next/link";
 import React from "react";
 import LogInModal from "./LogInModal";
 import { useModalStore } from "@/zustand/modal.store";
+import { useAuthStore } from "@/zustand/auth.store";
+import { ballangClient } from "@/api/ballang.api";
 
 function Header() {
   const setModal = useModalStore((state) => state.setModal);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const handleClickLogIn = () => {
     setModal(<LogInModal />);
+  };
+
+  const handleClickLogOut = async () => {
+    await ballangClient.delete("/auth/log-out");
+    setIsLoggedIn(false);
   };
 
   return (
@@ -23,10 +32,19 @@ function Header() {
       </section>
 
       <section className="mr-10">
-        <Link href="/sign-up" className="mr-5">
-          회원가입
-        </Link>
-        <button onClick={handleClickLogIn}>로그인</button>
+        {isLoggedIn ? (
+          <>
+            <Link href="/cart">장바구니</Link>
+            <button onClick={handleClickLogOut}>로그아웃</button>
+          </>
+        ) : (
+          <>
+            <Link href="/sign-up" className="mr-5">
+              회원가입
+            </Link>
+            <button onClick={handleClickLogIn}>로그인</button>
+          </>
+        )}
       </section>
     </header>
   );

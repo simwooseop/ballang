@@ -1,4 +1,4 @@
-import { ballangAPI } from "@/api/ballang.api";
+import { ballangClient } from "@/api/ballang.api";
 import { Product } from "@/types/ballang.type";
 import React from "react";
 
@@ -9,7 +9,7 @@ async function ProductDetailPage({
 }) {
   const productId = params.productId;
 
-  const response = await ballangAPI.get(`/products/${productId}`);
+  const response = await ballangClient.get(`/products/${productId}`);
   const product = (await response.data.result) as Product;
 
   return (

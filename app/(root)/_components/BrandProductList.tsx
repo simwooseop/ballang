@@ -1,21 +1,10 @@
-"use client";
 import { getBrandProducts } from "@/api/ballang.api";
-import { useQuery } from "@tanstack/react-query";
+import { Product } from "@/types/ballang.type";
 import Link from "next/link";
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/alt-text */
-// import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import React from "react";
 
-function BrandProductList() {
-  const params = useSearchParams();
-  const brandId = params.get("brandId");
-
-  const { data: products } = useQuery({
-    queryKey: ["products", brandId],
-    queryFn: () => getBrandProducts(brandId),
-  });
+async function BrandProductList({ brandId }: { brandId: string | undefined }) {
+  const products = (await getBrandProducts(brandId)) as Product[];
 
   return (
     <ul className="grid grid-cols-6 gap-y-5 gap-x-5 mx-5">

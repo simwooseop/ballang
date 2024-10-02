@@ -1,11 +1,14 @@
 "use client";
 
-import { ballangAPI } from "@/api/ballang.api";
+import { ballangClient } from "@/api/ballang.api";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { ComponentProps, useRef } from "react";
 
 function LogInModal() {
   const setModal = useModalStore((state) => state.setModal);
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+
   const emailInputRef = useRef<HTMLInputElement | null>(null);
   const passwordInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -21,8 +24,9 @@ function LogInModal() {
     };
 
     try {
-      await ballangAPI.post("/auth/log-in", data);
+      await ballangClient.post("/auth/log-in", data);
       setModal(null);
+      setIsLoggedIn(true);
     } catch {
       alert("로그인 실패");
     }

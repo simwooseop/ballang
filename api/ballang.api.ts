@@ -1,14 +1,15 @@
 import { Brand, Product } from "@/types/ballang.type";
 import axios from "axios";
 
-export const ballangAPI = axios.create({
-  baseURL: "https://api.ballang.yoojinyoung.com",
+const baseURL = "https://api.ballang.yoojinyoung.com/";
+export const ballangClient = axios.create({
+  baseURL,
   withCredentials: true,
 });
 
 export const getBrands = async () => {
   try {
-    const response = await ballangAPI.get(`/brands`);
+    const response = await ballangClient.get(`/brands`);
     const brands = (await response.data.result) as Brand[];
     return brands;
   } catch (e) {
@@ -18,7 +19,7 @@ export const getBrands = async () => {
 
 export const getProducts = async () => {
   try {
-    const response = await ballangAPI.get("/products");
+    const response = await ballangClient.get("/products");
     const products = (await response.data.result) as Product[];
     return products;
   } catch (e) {
@@ -26,15 +27,15 @@ export const getProducts = async () => {
   }
 };
 
-export const getBrandProducts = async (brandId: string | null) => {
+export const getBrandProducts = async (brandId: string | undefined) => {
   try {
-    const response = await ballangAPI.get(
-      brandId === null ? "/products" : `/brands/${brandId}`
+    const response = await ballangClient.get(
+      brandId === undefined ? "/products" : `/brands/${brandId}`
     );
     const result = (await response.data.result) as Product[];
     const products = (await response.data.result.products) as Product[];
 
-    if (brandId === null) return result;
+    if (brandId === undefined) return result;
     return products;
   } catch (e) {
     console.log(e);
