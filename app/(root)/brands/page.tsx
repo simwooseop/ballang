@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Brand } from "@/types/ballang.type";
-import { getBrands } from "@/api/ballang.api";
 import BrandProductList from "../_components/BrandProductList";
+import ballangAPI from "@/api/ballang.api";
 
 async function BrandsPage({
   searchParams,
@@ -10,7 +10,7 @@ async function BrandsPage({
 }) {
   const brandId = searchParams.brandId;
 
-  const brands = (await getBrands()) as Brand[];
+  const brands = (await ballangAPI.getBrands()) as Brand[];
   return (
     <main className="flex flex-col items-center">
       <h2 className={"pt-32 text-3xl font-bold"}>Brands</h2>

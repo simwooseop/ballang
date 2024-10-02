@@ -1,63 +1,115 @@
 "use client";
 
-import { ballangClient } from "@/api/ballang.api";
-import { CartProduct } from "@/types/ballang.type";
+import ballangAPI from "@/api/ballang.api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 function CartPage() {
-  const [cartProducts, setCartProducts] = useState<CartProduct[] | null>(null);
-  useEffect(() => {
-    (async () => {
-      const response = await ballangClient.get("/cart");
-      const products = await response.data.result.items;
-      console.log(products);
-      setCartProducts(products);
-    })();
-  }, []);
+  const queryClient = useQueryClient();
+
+  const { data: carts } = useQuery({
+    queryKey: ["carts"],
+    queryFn: () => ballangAPI.getCart(),
+  });
+
+  const { mutate: decreaseItem } = useMutation({
+    mutationFn: (productId: string) => ballangAPI.decreaseItem(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["carts"], exact: true });
+    },
+  });
+  const { mutate: increaseItem } = useMutation({
+    mutationFn: (productId: string) => ballangAPI.increaseItem(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["carts"], exact: true });
+    },
+  });
+
+  const handleClickDecreaseItem = (productId: string) => {
+    decreaseItem(productId);
+  };
+  const handleClickIncreaseItem = (productId: string) => {
+    increaseItem(productId);
+  };
 
   return (
     <div className="text-center">
       <h2 className="pt-32 text-3xl font-bold">장바구니</h2>
-      {cartProducts?.length ? (
+      {carts?.length ? (
         <ul className="flex flex-col ">
-          {cartProducts?.map((cartProduct) => (
-            <li
-              className="flex h-40 mx-96 gap-x-5 items-center border-y border-black/25"
+          {carts?.map((cartProduct) => (
+            <Link
+              href={`/products/${cartProduct.productId}`}
               key={cartProduct.product.id}
+              className="h-50 mx-96 border-y border-black/25"
             >
-              <img
-                className="w-[15%] h-[100%]"
-                src={cartProduct.product.imgSrc}
-              />
-              <div className="flex flex-col items-start gap-y-3">
-                <strong>
-                  {cartProduct.product.brand.nameKr} /{" "}
-                  {cartProduct.product.brand.nameEn}
-                </strong>
-                <p className="text-lg">{cartProduct.product.name}</p>
+              <li className="flex gap-x-5 items-center">
+                <img
+                  className="w-[15%] h-[100%]"
+                  src={cartProduct.product.imgSrc}
+                />
 
-                <section className="flex">
-                  <p className="font-bold text-red-500 line-through">
-                    ₩{cartProduct.product.originalPrice.toLocaleString()}
+                <div className="flex flex-col items-start gap-y-3">
+                  <strong>
+                    {cartProduct.product.brand.nameKr} /{" "}
+                    {cartProduct.product.brand.nameEn}
+                  </strong>
+                  <p className="text-lg text-start">
+                    {cartProduct.product.name}
                   </p>
-                  <p className="ml-2 font-bold">
-                    ₩{cartProduct.product.price.toLocaleString()}
+
+                  <section className="flex">
+                    <p className="font-bold text-red-500 line-through">
+                      ₩{cartProduct.product.originalPrice.toLocaleString()}
+                    </p>
+                    <p className="ml-2 font-bold">
+                      ₩{cartProduct.product.price.toLocaleString()}
+                    </p>
+                  </section>
+                  <p className="text-sm">
+                    {cartProduct.product.deliveryType} | 잔여재고{" "}
+                    {cartProduct.product.onlineStock}ea
                   </p>
-                </section>
-                <p className="text-sm">
-                  {cartProduct.product.deliveryType} | 잔여재고{" "}
-                  {cartProduct.product.onlineStock}ea
-                </p>
-              </div>
-            </li>
+                </div>
+
+                <div className="z-10 grid grid-cols-3 w-[75px] h-[25px] ml-auto ">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClickDecreaseItem(cartProduct.productId);
+                    }}
+                    className="bg-black text-white border border-black w-[25px]"
+                  >
+                    -
+                  </button>
+                  <p className="border border-black w-[25px]">
+                    {cartProduct.quantity}
+                  </p>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClickIncreaseItem(cartProduct.productId);
+                    }}
+                    className="bg-black text-white border border-black w-[25px]"
+                  >
+                    +
+                  </button>
+                </div>
+              </li>
+            </Link>
           ))}
         </ul>
       ) : (
-        <>
-          <p>장바구니가 비어 있습니다.</p>
-          <Link href="/">쇼핑하러 가기</Link>
-        </>
+        <div className="flex flex-col">
+          <p className="my-10">장바구니가 비어 있습니다.</p>
+
+          <Link
+            className="border border-black mx-[750px] h-16 flex items-center justify-center"
+            href="/"
+          >
+            <strong>쇼핑하러가기</strong>
+          </Link>
+        </div>
       )}
     </div>
   );

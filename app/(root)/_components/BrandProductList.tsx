@@ -1,10 +1,10 @@
-import { getBrandProducts } from "@/api/ballang.api";
+import ballangAPI from "@/api/ballang.api";
 import { Product } from "@/types/ballang.type";
 import Link from "next/link";
 import React from "react";
 
 async function BrandProductList({ brandId }: { brandId: string | undefined }) {
-  const products = (await getBrandProducts(brandId)) as Product[];
+  const products = (await ballangAPI.getBrandProducts(brandId)) as Product[];
 
   return (
     <ul className="grid grid-cols-6 gap-y-5 gap-x-5 mx-5">

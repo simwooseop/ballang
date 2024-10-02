@@ -1,6 +1,7 @@
 import { ballangClient } from "@/api/ballang.api";
 import { Product } from "@/types/ballang.type";
 import React from "react";
+import CartButton from "../../_components/CartButton";
 
 async function ProductDetailPage({
   params,
@@ -11,7 +12,6 @@ async function ProductDetailPage({
 
   const response = await ballangClient.get(`/products/${productId}`);
   const product = (await response.data.result) as Product;
-
   return (
     <div className="pt-32 mx-auto w-[60vw] h-[85vh] justify-center flex flex-row gap-x-5">
       <img className="object-cover" src={product.imgSrc} />
@@ -28,16 +28,14 @@ async function ProductDetailPage({
             ₩{product.originalPrice.toLocaleString()}
           </strong>
           <strong>판매가</strong>
-          <strong>₩{product.price}</strong>
+          <strong>₩{product.price.toLocaleString()}</strong>
           <strong>배송</strong>
           <p>{product.deliveryType}</p>
           <strong>잔여 재고</strong>
           <p>{product.onlineStock}</p>
         </section>
 
-        <button className="w-[100%] h-14 hover:-translate-y-2 transition bg-black text-white font-bold mt-10 ">
-          장바구니에 담기
-        </button>
+        <CartButton productId={productId}></CartButton>
       </div>
     </div>
   );

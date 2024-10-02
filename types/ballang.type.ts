@@ -5,6 +5,7 @@ export type CartProduct = {
   productId: string;
   quantity: number;
 };
+
 export type Product = {
   id: number;
   name: string;

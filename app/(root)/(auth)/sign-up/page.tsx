@@ -2,10 +2,11 @@
 import { ballangClient } from "@/api/ballang.api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
-import React, { ComponentProps, useRef } from "react";
+import React, { ComponentProps, useRef, useState } from "react";
 
 function SignUpPage() {
   const router = useRouter();
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
@@ -25,15 +26,21 @@ function SignUpPage() {
     if (!passwordConfirm || password !== passwordConfirm)
       return alert("비밀번호가 다릅니다");
 
+    setIsDisabled(true);
     const data = {
       email,
       password,
       passwordConfirm,
     };
 
-    await ballangClient.post("/auth/sign-up", data);
-    setIsLoggedIn(true);
-    router.replace("/");
+    try {
+      await ballangClient.post("/auth/sign-up", data);
+      setIsLoggedIn(true);
+      router.replace("/");
+    } catch (e) {
+      console.log(e);
+    }
+    setIsDisabled(false);
   };
 
   return (
@@ -44,6 +51,7 @@ function SignUpPage() {
           이메일
         </label>
         <input
+          disabled={isDisabled}
           id="email"
           ref={emailInputRef}
           className="h-12 border border-black/25 rounded-sm"
@@ -53,6 +61,7 @@ function SignUpPage() {
           비밀번호
         </label>
         <input
+          disabled={isDisabled}
           id="password"
           ref={passwordInputRef}
           className="h-12 border border-black/25 rounded-sm"
@@ -62,12 +71,14 @@ function SignUpPage() {
           비밀번호 확인
         </label>
         <input
+          disabled={isDisabled}
           id="password_confirm"
           ref={passwordConfirmInputRef}
           className="h-12 mb-10 border border-black/25 rounded-sm"
           type="password"
         />
         <button
+          disabled={isDisabled}
           type="submit"
           className="w-[400px] bg-black text-white h-14 font-bold"
         >
