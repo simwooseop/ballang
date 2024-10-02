@@ -13,7 +13,7 @@ function ProductList() {
   });
 
   return (
-    <ul className="grid grid-cols-6 gap-y-5 gap-x-5 mx-5">
+    <ul className="grid grid-cols-6 gap-y-5 mt-10 gap-x-5 mx-5">
       {products?.map((product) => (
         <Link
           className="hover:scale-105 transition"

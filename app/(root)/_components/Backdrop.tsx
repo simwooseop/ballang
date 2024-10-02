@@ -15,7 +15,7 @@ function Backdrop({ children }: PropsWithChildren) {
     <div
       onClick={handleClickBackdrop}
       ref={BackdropRef}
-      className="flex justify-center items-center fixed z-10 w-screen h-screen bg-black/75"
+      className="z-20 flex justify-center items-center fixed z-10 w-screen h-screen bg-black/75"
     >
       <div className="rounded-md flex flex-col items-center bg-white w-[400px] h-[450px]">
         <h2 className="mt-24 font-bold text-3xl">로그인</h2>

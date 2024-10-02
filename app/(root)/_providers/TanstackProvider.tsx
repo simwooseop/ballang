@@ -8,6 +8,7 @@ const queryClient = new QueryClient();
 
 function TanstackProvider({ children }: PropsWithChildren) {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setAuthInitial = useAuthStore((state) => state.setAuthInitial);
 
   useEffect(() => {
     (async () => {
@@ -17,6 +18,7 @@ function TanstackProvider({ children }: PropsWithChildren) {
       } else {
         setIsLoggedIn(true);
       }
+      setAuthInitial();
     })();
   }, []);
 
