@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
 
-function ProductList() {
-  const { data: products } = useQuery({
+function ProductList({ initialProducts }) {
+  const { data: products = initialProducts } = useQuery({
     queryKey: ["products"],
     queryFn: () => ballangAPI.getBrandProducts(),
   });
