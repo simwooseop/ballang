@@ -8,7 +8,7 @@ async function HomePage() {
     <main className="text-center">
       <h2 className="pt-32 text-3xl font-bold">Trending</h2>
 
-      <ProductList initialProducts={products} />
+      <ProductList initialProducts={products!} />
     </main>
   );
 }

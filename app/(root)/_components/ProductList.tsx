@@ -1,10 +1,10 @@
 "use client";
 import ballangAPI from "@/api/ballang.api";
+import { Product } from "@/types/ballang.type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import React from "react";
 
-function ProductList({ initialProducts }) {
+function ProductList({ initialProducts }: { initialProducts: Product[] }) {
   const { data: products = initialProducts } = useQuery({
     queryKey: ["products"],
     queryFn: () => ballangAPI.getBrandProducts(),
