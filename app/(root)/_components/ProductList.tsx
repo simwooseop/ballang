@@ -4,10 +4,17 @@ import { Product } from "@/types/ballang.type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
-function ProductList({ initialProducts }: { initialProducts: Product[] }) {
-  const { data: products = initialProducts } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => ballangAPI.getBrandProducts(),
+function ProductList({
+  initialProducts,
+  brandId,
+}: {
+  initialProducts: Product[];
+  brandId?: string | undefined;
+}) {
+  const { data: products } = useQuery({
+    queryKey: ["products", { brandId }],
+    queryFn: () => ballangAPI.getProducts(brandId),
+    initialData: brandId ? null : initialProducts,
   });
 
   return (

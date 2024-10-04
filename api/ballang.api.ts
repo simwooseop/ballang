@@ -17,6 +17,7 @@ const getBrands = async () => {
   }
 };
 
+let products;
 const getProducts = async (brandId?: string) => {
   try {
     const response = await ballangClient.get(
@@ -24,12 +25,12 @@ const getProducts = async (brandId?: string) => {
     );
 
     if (brandId === undefined) {
-      const allProducts = (await response.data.result) as Product[];
-      return allProducts;
+      products = (await response.data.result) as Product[];
+      return products;
     }
 
-    const brandProducts = (await response.data.result.products) as Product[];
-    return brandProducts;
+    products = (await response.data.result.products) as Product[];
+    return products;
   } catch (e) {
     console.log(e);
   }
@@ -71,7 +72,6 @@ const deleteItem = async (productId: string) => {
 const ballangAPI = {
   getBrands,
   getProducts,
-  getBrandProducts: getProducts,
   getCart,
   decreaseItem,
   increaseItem,

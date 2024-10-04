@@ -2,7 +2,7 @@ import ballangAPI from "@/api/ballang.api";
 import ProductList from "./_components/ProductList";
 
 async function HomePage() {
-  const products = await ballangAPI.getBrandProducts();
+  const products = await ballangAPI.getProducts();
 
   return (
     <main className="text-center">

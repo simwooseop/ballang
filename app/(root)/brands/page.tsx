@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { Brand } from "@/types/ballang.type";
-import BrandProductList from "../_components/BrandProductList";
 import ballangAPI from "@/api/ballang.api";
+import { Brand, Product } from "@/types/ballang.type";
+import Link from "next/link";
+import ProductList from "../_components/ProductList";
 
 async function BrandsPage({
   searchParams,
@@ -9,8 +9,8 @@ async function BrandsPage({
   searchParams: { brandId: string | undefined };
 }) {
   const brandId = searchParams.brandId;
-
   const brands = (await ballangAPI.getBrands()) as Brand[];
+  const Products = (await ballangAPI.getProducts()) as Product[];
   return (
     <main className="flex flex-col items-center">
       <h2 className={"pt-32 text-3xl font-bold"}>Brands</h2>
@@ -40,7 +40,7 @@ async function BrandsPage({
         ))}
       </ul>
 
-      <BrandProductList brandId={brandId} />
+      <ProductList initialProducts={Products} brandId={brandId} />
     </main>
   );
 }

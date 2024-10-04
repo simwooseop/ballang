@@ -13,7 +13,7 @@ export default function HTMLLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className="[&::-webkit-scrollbar]:hidden">{children}</body>
     </html>
   );
 }
