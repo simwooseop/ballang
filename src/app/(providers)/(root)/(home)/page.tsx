@@ -17,7 +17,7 @@ async function HomePage() {
             src={product.imgSrc}
             alt={product.imgSrc}
             fill={true}
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
           />
         </li>
       ))}

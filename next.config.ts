@@ -2,7 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["i.balaan.io"],
+    remotePatterns: [
+      {
+        hostname: "i.balaan.io",
+      },
+    ],
   },
 };
 
