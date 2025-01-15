@@ -3,8 +3,8 @@ import Image from "next/image";
 import useAuthForm from "./AuthForm.hook";
 import Input from "./Input";
 
-function SignUpModal() {
-  const { handleSubmitSignUp, handleChange, errorText, formData } =
+function LogInModal() {
+  const { handleSubmitLogIn, handleChange, errorText, formData } =
     useAuthForm();
   return (
     <div className="mt-14">
@@ -15,15 +15,7 @@ function SignUpModal() {
         height={72}
         className="mx-auto mb-10 rounded-md"
       />
-      <form onSubmit={handleSubmitSignUp} className="grid gap-2">
-        <Input
-          errorText={errorText.name}
-          placeholder="이름"
-          type="text"
-          onChange={handleChange}
-          value={formData.name}
-          name="name"
-        />
+      <form onSubmit={handleSubmitLogIn} className="grid gap-2">
         <Input
           errorText={errorText.email}
           placeholder="이메일"
@@ -59,4 +51,4 @@ function SignUpModal() {
   );
 }
 
-export default SignUpModal;
+export default LogInModal;
