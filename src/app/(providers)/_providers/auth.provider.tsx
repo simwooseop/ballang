@@ -6,7 +6,9 @@ import { PropsWithChildren, useEffect } from "react";
 
 function AuthProvider({ children }: PropsWithChildren) {
   const setIsLogIn = useAuthStore((state) => state.setIsLogIn);
-  const setAuthInitialized = useAuthStore((state) => state.setAuthInitialized);
+  const setIsAuthInitialized = useAuthStore(
+    (state) => state.setIsAuthInitialized
+  );
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (_eventName, session) => {
@@ -15,7 +17,7 @@ function AuthProvider({ children }: PropsWithChildren) {
       } else {
         setIsLogIn(false);
       }
-      setAuthInitialized(true);
+      setIsAuthInitialized(true);
     });
   }, []);
   return children;
