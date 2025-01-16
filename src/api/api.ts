@@ -1,7 +1,7 @@
-import { ballangApi } from "./ballang/ballang.api";
+import { productApi } from "./product";
 
 const api = {
-  ballang: ballangApi,
+  product: productApi,
 };
 
 export default api;

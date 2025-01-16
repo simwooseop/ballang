@@ -26,7 +26,7 @@ function Header() {
   };
 
   return (
-    <header className="w-screen flex items-center h-16 fixed z-10 border-b ">
+    <header className="w-screen bg-white flex items-center h-16 fixed z-10 border-b ">
       <div className="flex justify-between max-w-[1200px] mx-auto w-full">
         <Link href="/">
           <Image
