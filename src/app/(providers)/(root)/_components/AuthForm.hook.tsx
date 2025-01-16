@@ -1,6 +1,6 @@
 "use client";
 import { supabase } from "@/supabase/supabase";
-import { InputChangeEvent } from "@/types/reactCustom.type";
+import { InputChangeEvent } from "@/types/reactCustom";
 import useModalStore from "@/zustand/modal.store";
 import { useState } from "react";
 
