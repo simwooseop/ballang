@@ -7,7 +7,8 @@ function LogInModal() {
   const { handleSubmitLogIn, handleChange, errorText, formData } =
     useAuthForm();
   return (
-    <div className="mt-14">
+    <div>
+      <h1 className="text-center text-3xl  mb-5">로그인</h1>
       <Image
         src="/logo.png"
         alt="logo"
@@ -32,19 +33,11 @@ function LogInModal() {
           value={formData.password}
           name="password"
         />
-        <Input
-          errorText={errorText.passwordConfirm}
-          placeholder="비밀번호 확인"
-          type="password"
-          onChange={handleChange}
-          value={formData.passwordConfirm}
-          name="passwordConfirm"
-        />
         <button
-          className="w-full h-8 text-white bg-blue-500 rounded-md"
+          className="w-full h-8 text-white bg-pink-300 rounded-md"
           type="submit"
         >
-          회원가입
+          로그인
         </button>
       </form>
     </div>

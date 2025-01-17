@@ -7,7 +7,8 @@ function SignUpModal() {
   const { handleSubmitSignUp, handleChange, errorText, formData } =
     useAuthForm();
   return (
-    <div className="mt-14">
+    <div>
+      <h1 className="text-center text-3xl  mb-5">회원가입</h1>
       <Image
         src="/logo.png"
         alt="logo"
@@ -49,7 +50,7 @@ function SignUpModal() {
           name="passwordConfirm"
         />
         <button
-          className="w-full h-8 text-white bg-blue-500 rounded-md"
+          className="w-full h-8 text-white bg-pink-300 rounded-md"
           type="submit"
         >
           회원가입
