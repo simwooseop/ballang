@@ -73,23 +73,32 @@ function useAuthForm() {
         },
       },
     };
-    await supabase.auth.signUp(userInfo);
+    const { error } = await supabase.auth.signUp(userInfo);
+    if (error) return console.log(error);
+    setModal(null);
   };
 
   const handleSubmitLogIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, ...logInFormData } = formData;
+    const { name, passwordConfirm, ...logInFormData } = formData;
     void name;
+    void passwordConfirm;
     const isEmpty = Object.values(logInFormData).some((value) => value === "");
-    const hasError = Object.values(errorText).some((value) => value !== "");
+
+    const { passwordConfirm: pwConfirm, ...logInErrorText } = errorText;
+    void pwConfirm;
+    const hasError = Object.values(logInErrorText).some(
+      (value) => value !== ""
+    );
     if (isEmpty || hasError) return alert("입력값을 확인해주세요");
 
-    await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: logInFormData.email,
       password: logInFormData.password,
     });
 
+    if (error) return console.log(error);
     setModal(null);
   };
 

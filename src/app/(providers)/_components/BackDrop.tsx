@@ -17,7 +17,7 @@ function BackDrop({ children }: PropsWithChildren) {
       onClick={handleClickBackDrop}
       ref={backDropRef}
     >
-      <div className="bg-white rounded-md w-[400px] h-[500px] mx-auto p-16">
+      <div className="bg-white rounded-md w-[400px] h-[500px] mx-auto p-10">
         {children}
       </div>
     </div>

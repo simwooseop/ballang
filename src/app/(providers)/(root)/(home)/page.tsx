@@ -1,14 +1,10 @@
 import api from "@/api/api";
-import { Brand, Product } from "@/types/supabaseCustom";
+import { Product } from "@/types/supabaseCustom";
 import Image from "next/image";
 import Link from "next/link";
 
-type Products = (Product["Row"] & {
-  brands: Brand["Row"];
-})[];
-
 async function HomePage() {
-  const products = (await api.product.getProducts()) as Products;
+  const products = (await api.product.getProducts()) as Product[];
 
   if (!products) return <span>데이터를 불러오는 중...</span>;
 
