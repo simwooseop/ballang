@@ -2,7 +2,7 @@ import api from "@/api/api";
 import { Product } from "@/types/supabaseCustom";
 import Image from "next/image";
 import Link from "next/link";
-import AddCartButton from "./_components/AddCartButton";
+import CartButton from "./_components/CartButton";
 
 interface ProductDetailPageProps {
   params: Promise<{ productId: string }>;
@@ -39,7 +39,7 @@ async function ProductDetailPage({ params }: ProductDetailPageProps) {
 
         <span className="text-xl">\{product.price.toLocaleString()}</span>
 
-        <AddCartButton />
+        <CartButton productId={product.id} />
       </section>
     </div>
   );
