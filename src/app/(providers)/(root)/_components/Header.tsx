@@ -27,8 +27,8 @@ function Header() {
 
   return (
     <header className="w-screen bg-white flex items-center h-16 fixed z-10 border-b ">
-      <div className="flex justify-between max-w-[1200px] mx-auto w-full">
-        <Link href="/">
+      <div className="flex w-[1200px] justify-between mx-auto">
+        <Link href="/" className="w-1/3">
           <Image
             src="/logo.png"
             alt="logo"
@@ -38,12 +38,16 @@ function Header() {
           />
         </Link>
 
-        <button>Brands</button>
+        <button className="w-1/3">Brands</button>
 
-        <div className="flex items-center w-[118px] justify-end">
+        <div className="flex items-center w-1/3 justify-end">
           {isAuthInitialized &&
             (isLogIn ? (
-              <button onClick={handleClickLogOut}>로그아웃</button>
+              <section className="flex gap-3">
+                <span>채팅상담</span>
+                <Link href="/cart">장바구니</Link>
+                <button onClick={handleClickLogOut}>로그아웃</button>
+              </section>
             ) : (
               <section className="flex gap-3">
                 <button onClick={handleClickLogIn}>로그인</button>

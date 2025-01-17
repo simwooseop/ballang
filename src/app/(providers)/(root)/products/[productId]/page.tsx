@@ -15,14 +15,13 @@ async function ProductDetailPage({ params }: ProductDetailPageProps) {
     <div className="max-w-[1200px] mx-auto grid grid-cols-2 gap-10">
       <section className="w-[30vw] h-[70vh] relative">
         <Image
-          className="contain"
+          className="cover"
           src={product.imgSrc}
           alt={product.name}
           fill={true}
         />
       </section>
-      <section className="flex flex-col gap-y-2">
-        <strong className="text-lg">{product.name}</strong>
+      <section className="flex flex-col">
         <Link
           className="underline text-gray-600/70"
           href={{
@@ -30,15 +29,15 @@ async function ProductDetailPage({ params }: ProductDetailPageProps) {
             query: { brandId: `${product.brandId}` },
           }}
         >
-          {product.brands.nameKr}
+          {product.brands.nameKr} / {product.brands.nameEn}
         </Link>
-        <div className="mt-3 text-lg">
-          <span>\{product.price.toLocaleString()}</span>
+        <strong className="text-lg">{product.name}</strong>
 
-          <span className="text-red-500 line-through pl-3">
-            \{product.originalPrice.toLocaleString()}
-          </span>
-        </div>
+        <span className="text-red-500 line-through mt-5">
+          \{product.originalPrice.toLocaleString()}
+        </span>
+
+        <span className="text-xl">\{product.price.toLocaleString()}</span>
 
         <AddCartButton />
       </section>
