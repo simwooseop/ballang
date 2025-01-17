@@ -25,8 +25,10 @@ async function HomePage() {
                 className="object-cover group-hover:scale-110 transition duration-300"
               />
             </section>
-            <strong>{product.brands.nameKr}</strong>
-            <span>{product.name}</span>
+            <span>
+              {product.brands.nameKr} / {product.brands.nameEn}
+            </span>
+            <strong>{product.name}</strong>
           </Link>
         </li>
       ))}
