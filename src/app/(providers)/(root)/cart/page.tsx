@@ -30,7 +30,7 @@ function CartPage() {
         {products.map((product) => (
           <li
             key={product.id}
-            className="border-y-4 border-pink-300 items-center flex gap-x-5 p-5"
+            className="border-y-4 -mb-1 border-pink-300 items-center flex gap-x-5 p-5"
           >
             <section className="w-[10vw] h-[15vw] relative">
               <Image

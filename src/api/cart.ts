@@ -9,12 +9,14 @@ import {
 
 const getCart = async (ownerId: string) => {
   try {
-    const { data: Products } = await supabase
+    const { data: carts } = await supabase
       .from("carts")
       .select("*")
-      .eq("ownerId", ownerId);
+      .eq("ownerId", ownerId)
+      .returns<CartsTable["Row"][]>()
+      .single();
 
-    return Products;
+    return carts as CartsTable["Row"];
   } catch (error) {
     console.log(error);
   }
