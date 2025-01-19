@@ -26,8 +26,8 @@ function Header() {
   };
 
   return (
-    <header className="w-screen bg-white flex items-center h-16 fixed z-10 border-b ">
-      <div className="flex w-[1200px] justify-between mx-auto">
+    <header className="w-full bg-white flex items-center h-16 fixed z-10 border-b ">
+      <div className="flex w-[1200px] justify-between mx-auto text-center">
         <Link href="/" className="w-1/3">
           <Image
             src="/logo.png"
@@ -38,7 +38,11 @@ function Header() {
           />
         </Link>
 
-        <button className="w-1/3">Brands</button>
+        <div className="self-center w-1/3">
+          <Link href="/brands" className="">
+            BRANDS
+          </Link>
+        </div>
 
         <div className="flex items-center w-1/3 justify-end">
           {isAuthInitialized &&

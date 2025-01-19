@@ -1,38 +1,19 @@
 import api from "@/api/api";
-import { Product } from "@/types/supabaseCustom";
-import Image from "next/image";
-import Link from "next/link";
+import { ProductPage } from "@/types/supabaseCustom";
+import ProductList from "../_components/ProductList";
 
 async function HomePage() {
-  const products = (await api.product.getProducts()) as Product[];
+  const initialProducts = (await api.product.getInfiniteProducts(
+    0
+  )) as ProductPage;
 
-  if (!products) return <span>데이터를 불러오는 중...</span>;
+  if (!initialProducts) return <span>데이터를 불러오는 중...</span>;
 
   return (
-    <ul className="max-w-[1200px] mx-auto h-screen grid gap-4 grid-cols-5">
-      {products.map((product) => (
-        <li key={product.id}>
-          <Link
-            className="w-full h-full group flex flex-col text-sm gap-y-1"
-            href={`/products/${product.id}`}
-          >
-            <section className="w-full h-[250px] aspect-square border border-gray-200 rounded-lg relative overflow-hidden">
-              <Image
-                src={product.imgSrc}
-                alt={product.imgSrc}
-                fill={true}
-                sizes="100%"
-                className="object-cover group-hover:scale-110 transition duration-300"
-              />
-            </section>
-            <span>
-              {product.brands.nameKr} / {product.brands.nameEn}
-            </span>
-            <strong>{product.name}</strong>
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <div className="max-w-[1200px] mx-auto h-screen">
+      <h1 className="text-3xl text-center mb-5">BALLANG</h1>
+      <ProductList initialProducts={initialProducts} />;
+    </div>
   );
 }
 
