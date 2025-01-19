@@ -24,4 +24,10 @@ export type CartProduct = Database["public"]["Tables"]["products"]["Row"] & {
   brands: BrandsTable["Row"];
 } & {
   quantity: number;
+  cartProductId: number;
+};
+
+export type ProductData = {
+  cartProductId: number;
+  quantity: number;
 };

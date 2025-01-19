@@ -26,8 +26,14 @@ const getCartProducts = async (userId: string) => {
   try {
     const { data: cart, error } = await supabase
       .from("carts")
-      .select("id, cartProducts(*, products(*, brands(*)))")
+      .select(
+        `id, 
+        cartProducts(*, 
+        products(*, 
+        brands(*)))`
+      )
       .eq("ownerId", userId)
+      .order("id", { ascending: true, referencedTable: "cartProducts" })
       .returns<
         Pick<CartsTable["Row"], "id"> &
           {
@@ -44,7 +50,10 @@ const getCartProducts = async (userId: string) => {
     const result = cartProducts.map((product) => ({
       quantity: product.quantity,
       ...product.products,
+      cartProductId: product.id,
     }));
+
+    console.log(result);
 
     return result as CartProduct[];
   } catch (error) {

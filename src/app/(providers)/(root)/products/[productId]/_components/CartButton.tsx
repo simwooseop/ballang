@@ -41,8 +41,8 @@ function CartButton({ productId }: AddCartButtonProps) {
   });
 
   const { mutate: removeCart } = useMutation({
-    mutationFn: async (cartProductData: Omit<CartProductData, "quantity">) =>
-      await api.cartProduct.removeCart(cartProductData),
+    mutationFn: async (cartProductId: number) =>
+      await api.cartProduct.removeCart(cartProductId),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["cartProducts"] }),
   });
@@ -61,12 +61,12 @@ function CartButton({ productId }: AddCartButtonProps) {
 
   const handleClickRemoveCartButton = async () => {
     if (!cart) return;
+    if (!products) return;
 
-    const cartProductData = {
-      cartId: cart.id,
-      productId,
-    };
-    removeCart(cartProductData);
+    const cartProductId = products.find(
+      (product) => product.id === productId
+    )!.cartProductId;
+    removeCart(cartProductId);
   };
 
   if (!products) return null;
