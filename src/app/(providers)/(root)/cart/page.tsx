@@ -60,11 +60,15 @@ function CartPage() {
     increaseProduct(productData);
   };
 
+  const totalPrice = products
+    ?.map((product) => product.quantity * product.price)
+    .reduce((total, currentValue) => total + currentValue, 0);
+
   return !currentUser ? (
     <div className="max-w-[1200px] mx-auto text-center">
       <h2 className="text-3xl">데이터를 불러오는중...</h2>
     </div>
-  ) : !products ? (
+  ) : products?.length === 0 ? (
     <div className="max-w-[1200px] mx-auto text-center">
       <h2 className="text-3xl">장바구니가 비었습니다...</h2>
     </div>
@@ -72,7 +76,7 @@ function CartPage() {
     <div className="max-w-[1200px] mx-auto text-center">
       <h2 className="text-3xl mb-5">장바구니</h2>
       <ul>
-        {products.map((product) => (
+        {products?.map((product) => (
           <li
             key={product.id}
             className="border-y-4 -mb-1 border-pink-300 items-center flex gap-x-5 p-5"
@@ -98,20 +102,27 @@ function CartPage() {
               <span className="text-xl">\{product.price.toLocaleString()}</span>
             </section>
 
-            <section className="text-2xl ml-auto self-end grid grid-cols-6 bg-gradient-to-t from-gray-400 to-gray-100 rounded-2xl p-2">
-              <button onClick={() => handleClickDecreaseButton(product)}>
-                -
-              </button>
+            <div className="ml-auto self-end flex flex-col gap-y-2">
+              <section className="text-2xl ml-auto grid grid-cols-6 bg-gradient-to-t from-gray-400 to-gray-100 rounded-2xl p-2 w-[6vw]">
+                <button onClick={() => handleClickDecreaseButton(product)}>
+                  -
+                </button>
 
-              <span className="col-span-4">{product.quantity}</span>
+                <span className="col-span-4">{product.quantity}</span>
 
-              <button onClick={() => handleClickIncreaseButton(product)}>
-                +
-              </button>
-            </section>
+                <button onClick={() => handleClickIncreaseButton(product)}>
+                  +
+                </button>
+              </section>
+
+              <span className="text-2xl">
+                \{(product.quantity * product.price).toLocaleString()}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
+      <p className="mt-5">총 합계 : \{totalPrice}</p>
     </div>
   );
 }
