@@ -31,3 +31,8 @@ export type ProductData = {
   cartProductId: number;
   quantity: number;
 };
+
+export type ProductPage = {
+  data: Product[];
+  hasMore: boolean;
+};

@@ -31,7 +31,7 @@ function useAuthForm() {
       if (value.length > 6) return "이름은 6자 이하로 입력해주세요.";
     }
     if (name === "email") {
-      if (!regex.test(value)) return "이메일 형식이 아닙니다.";
+      if (!regex.test(value)) return "올바른 형식을 입력해주세요";
     }
     if (name === "password") {
       if (value.length < 6) return "비밀번호는 6자 이상으로 입력해주세요.";
