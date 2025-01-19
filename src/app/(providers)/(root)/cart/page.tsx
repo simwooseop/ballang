@@ -1,12 +1,13 @@
 "use client";
 
 import api from "@/api/api";
-import { CartProduct } from "@/types/supabaseCustom";
+import { CartProduct, ProductData } from "@/types/supabaseCustom";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 
 function CartPage() {
+  const queryClient = useQueryClient();
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const { data: products } = useQuery<CartProduct[]>({
@@ -16,14 +17,58 @@ function CartPage() {
     enabled: !!currentUser,
   });
 
-  if (!products)
-    return (
-      <div className="max-w-[1200px] mx-auto text-center">
-        <h2 className="text-3xl">장바구니가 비었습니다...</h2>
-      </div>
-    );
+  const { mutate: removeCart } = useMutation({
+    mutationFn: async (cartProductId: number) =>
+      await api.cartProduct.removeCart(cartProductId),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["cartProducts"] }),
+  });
 
-  return (
+  const { mutate: decreaseProduct } = useMutation({
+    mutationFn: async (productData: ProductData) =>
+      await api.cartProduct.decreaseProduct(productData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cartProducts"] });
+    },
+  });
+
+  const { mutate: increaseProduct } = useMutation({
+    mutationFn: async (productData: ProductData) =>
+      await api.cartProduct.increaseProduct(productData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cartProducts"] });
+    },
+  });
+
+  const handleClickDecreaseButton = (product: CartProduct) => {
+    if (product.quantity > 1) {
+      const productData = {
+        cartProductId: product.cartProductId,
+        quantity: product.quantity,
+      };
+      decreaseProduct(productData);
+    } else {
+      removeCart(product.cartProductId);
+    }
+  };
+
+  const handleClickIncreaseButton = (product: CartProduct) => {
+    const productData = {
+      cartProductId: product.cartProductId,
+      quantity: product.quantity,
+    };
+    increaseProduct(productData);
+  };
+
+  return !currentUser ? (
+    <div className="max-w-[1200px] mx-auto text-center">
+      <h2 className="text-3xl">데이터를 불러오는중...</h2>
+    </div>
+  ) : !products ? (
+    <div className="max-w-[1200px] mx-auto text-center">
+      <h2 className="text-3xl">장바구니가 비었습니다...</h2>
+    </div>
+  ) : (
     <div className="max-w-[1200px] mx-auto text-center">
       <h2 className="text-3xl mb-5">장바구니</h2>
       <ul>
@@ -54,11 +99,15 @@ function CartPage() {
             </section>
 
             <section className="text-2xl ml-auto self-end grid grid-cols-6 bg-gradient-to-t from-gray-400 to-gray-100 rounded-2xl p-2">
-              <button>-</button>
+              <button onClick={() => handleClickDecreaseButton(product)}>
+                -
+              </button>
 
               <span className="col-span-4">{product.quantity}</span>
 
-              <button>+</button>
+              <button onClick={() => handleClickIncreaseButton(product)}>
+                +
+              </button>
             </section>
           </li>
         ))}
