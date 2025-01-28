@@ -48,7 +48,7 @@ function Header() {
           {isAuthInitialized &&
             (isLogIn ? (
               <section className="flex gap-3">
-                <span>채팅상담</span>
+                <Link href="/chat">채팅상담</Link>
                 <Link href="/cart">장바구니</Link>
                 <button onClick={handleClickLogOut}>로그아웃</button>
               </section>

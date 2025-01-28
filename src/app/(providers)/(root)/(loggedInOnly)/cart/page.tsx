@@ -122,7 +122,7 @@ function CartPage() {
           </li>
         ))}
       </ul>
-      <p className="mt-5">총 합계 : \{totalPrice}</p>
+      <p className="mt-5">총 합계 : \{totalPrice?.toLocaleString()}</p>
     </div>
   );
 }
