@@ -122,7 +122,10 @@ function CartPage() {
           </li>
         ))}
       </ul>
-      <p className="mt-5">총 합계 : \{totalPrice?.toLocaleString()}</p>
+      <p className="mt-5 text-2xl">총 합계 : \{totalPrice?.toLocaleString()}</p>
+      <button className="mt-5 rounded-md bg-pink-300 text-white text-xl w-56">
+        결제하기
+      </button>
     </div>
   );
 }

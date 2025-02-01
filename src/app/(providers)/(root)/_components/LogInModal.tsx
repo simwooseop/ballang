@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import useAuthForm from "./AuthForm.hook";
+import useAuthForm from "../_hooks/useAuthForm";
 import Input from "./Input";
 
 function LogInModal() {
