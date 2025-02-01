@@ -18,28 +18,24 @@ type Users = {
 }[];
 
 function ChattingPage() {
-  const [isConnect, setIsConnect] = useState(socket.connected);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   const [customers, setCustomers] = useState<Users>();
   const currentUser = useAuthStore((state) => state.currentUser);
   const customerId = useSearchParams().get("customerId");
 
+  // socket.io 이벤트리스너
   useEffect(() => {
-    socket.on("connect", () => {
-      setIsConnect(true);
-    });
-    socket.on("disconnect", () => {
-      setIsConnect(false);
-    });
+    socket.on("connect", () => {});
+    socket.on("disconnect", () => {});
 
     return () => {
       socket.off("connect");
       socket.off("disconnect");
     };
-  }, [isConnect]);
+  }, []);
 
-  // 메시지 수신
+  // 메시지 실시간 수신 이벤트리스너
   useEffect(() => {
     if (!messages) return;
 
@@ -51,18 +47,18 @@ function ChattingPage() {
     return () => {
       socket.off("receive_msg");
     };
-  }, [socket, messages]);
+  }, [messages]);
 
-  // 관리자가 채팅방 선택했을 시
+  // 관리자가 채팅방(유저) 선택했을 시
   useEffect(() => {
     if (!currentUser) return;
-    if (!currentUser.isAdmin) return;
+    if (!currentUser.isAdmin || !customerId) return;
 
     socket.emit("join_room", {
       userName: "관리자",
       room: customerId,
     });
-  }, [customerId]);
+  }, [customerId, currentUser]);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -78,21 +74,26 @@ function ChattingPage() {
     // 관리자
     if (currentUser.isAdmin) {
       (async () => {
-        const { data: rooms } = await axios.get("http://localhost/api/rooms");
-        const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
+        try {
+          const { data: rooms } = await axios.get("http://localhost/api/rooms");
+          const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
 
-        const { data: users, error } = await supabase
-          .from("profiles")
-          .select("name, id")
-          .in("id", roomIds)
-          .returns<Users>();
-        if (error) return;
+          const { data: users, error } = await supabase
+            .from("profiles")
+            .select("name, id")
+            .in("id", roomIds)
+            .returns<Users>();
+          if (error) return;
 
-        setCustomers(users);
+          setCustomers(users);
+        } catch (error) {
+          throw new Error(String(error));
+        }
       })();
     }
   }, [currentUser]);
 
+  // 채팅 내역 가져오기
   useEffect(() => {
     if (!currentUser) return;
 
@@ -104,6 +105,7 @@ function ChattingPage() {
     })();
   }, [currentUser, customerId]);
 
+  // 메시지 전송
   const handleSendMessage = () => {
     if (!currentUser || !messages) return;
 
