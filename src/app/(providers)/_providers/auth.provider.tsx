@@ -24,7 +24,7 @@ function AuthProvider({ children }: PropsWithChildren) {
       }
       setIsAuthInitialized(true);
     });
-  }, []);
+  }, [setIsAuthInitialized, setIsLogIn]);
 
   useEffect(() => {
     if (!userId) return;
@@ -32,7 +32,7 @@ function AuthProvider({ children }: PropsWithChildren) {
       const profile = await api.profile.getProfile(userId);
       setCurrentUser(profile);
     })();
-  }, [userId]);
+  }, [userId, setCurrentUser]);
   return children;
 }
 

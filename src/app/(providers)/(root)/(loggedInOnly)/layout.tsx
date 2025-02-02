@@ -13,7 +13,7 @@ function LoggedInOnlyLayout({ children }: PropsWithChildren) {
     if (isAuthInitialized) {
       if (!isLogIn) router.replace("/");
     }
-  }, [isAuthInitialized, isLogIn]);
+  }, [isAuthInitialized, isLogIn, router]);
 
   return children;
 }

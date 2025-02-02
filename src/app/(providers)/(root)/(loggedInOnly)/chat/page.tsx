@@ -6,7 +6,7 @@ import { useAuthStore } from "@/zustand/auth.store";
 import axios from "axios";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { v4 } from "uuid";
 
@@ -17,7 +17,7 @@ type Users = {
   name: string;
 }[];
 
-function ChattingPage() {
+function Chat() {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   const [customers, setCustomers] = useState<Users>();
@@ -168,6 +168,14 @@ function ChattingPage() {
         </section>
       </div>
     </div>
+  );
+}
+
+function ChattingPage() {
+  return (
+    <Suspense fallback={<div>로딩중...</div>}>
+      <Chat />
+    </Suspense>
   );
 }
 
