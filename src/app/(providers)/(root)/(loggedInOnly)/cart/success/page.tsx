@@ -4,9 +4,9 @@
 
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-function TossSuccessPage() {
+function Toss() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [responseData, setResponseData] = useState(null);
@@ -81,6 +81,14 @@ function TossSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function TossSuccessPage() {
+  return (
+    <Suspense fallback={<div>로딩중...</div>}>
+      <Toss />
+    </Suspense>
   );
 }
 
