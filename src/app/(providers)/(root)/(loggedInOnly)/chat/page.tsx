@@ -10,7 +10,7 @@ import { Suspense, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { v4 } from "uuid";
 
-const socket = io("http://smileb.kro.kr");
+const socket = io("https://rocky-savannah-73617-984b81b13be1.herokuapp.com");
 
 type Users = {
   id: string;
@@ -75,7 +75,9 @@ function Chat() {
     if (currentUser.isAdmin) {
       (async () => {
         try {
-          const { data: rooms } = await axios.get("http://smileb.kro.kr/rooms");
+          const { data: rooms } = await axios.get(
+            "https://rocky-savannah-73617-984b81b13be1.herokuapp.com/rooms"
+          );
           const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
 
           const { data: users, error } = await supabase
