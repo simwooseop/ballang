@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { v4 } from "uuid";
 
-const socket = io("http://localhost");
+const socket = io("http://smileb.kro.kr");
 
 type Users = {
   id: string;
@@ -75,7 +75,7 @@ function ChattingPage() {
     if (currentUser.isAdmin) {
       (async () => {
         try {
-          const { data: rooms } = await axios.get("http://localhost/rooms");
+          const { data: rooms } = await axios.get("http://smileb.kro.kr/rooms");
           const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
 
           const { data: users, error } = await supabase
