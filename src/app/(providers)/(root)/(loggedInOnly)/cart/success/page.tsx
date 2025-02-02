@@ -21,7 +21,7 @@ function TossSuccessPage() {
 
       try {
         const response = await axios.post(
-          "http://localhost/toss",
+          "http://smileb.kro.kr/toss",
           requestData,
           {
             headers: {
