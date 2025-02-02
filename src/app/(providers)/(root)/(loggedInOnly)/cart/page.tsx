@@ -3,12 +3,15 @@
 import api from "@/api/api";
 import { CartProduct, ProductData } from "@/types/supabaseCustom";
 import { useAuthStore } from "@/zustand/auth.store";
+import useModalStore from "@/zustand/modal.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
+import TossModal from "./_components/TossModal";
 
 function CartPage() {
   const queryClient = useQueryClient();
   const currentUser = useAuthStore((state) => state.currentUser);
+  const setModal = useModalStore((state) => state.setModal);
 
   const { data: products } = useQuery<CartProduct[]>({
     queryKey: ["cartProducts", currentUser],
@@ -16,6 +19,10 @@ function CartPage() {
       (await api.cart.getCartProducts(currentUser!.id)) as CartProduct[],
     enabled: !!currentUser,
   });
+  // 전체가격
+  const totalPrice = products
+    ?.map((product) => product.quantity * product.price)
+    .reduce((total, currentValue) => total + currentValue, 0);
 
   const { mutate: removeCart } = useMutation({
     mutationFn: async (cartProductId: number) =>
@@ -60,9 +67,20 @@ function CartPage() {
     increaseProduct(productData);
   };
 
-  const totalPrice = products
-    ?.map((product) => product.quantity * product.price)
-    .reduce((total, currentValue) => total + currentValue, 0);
+  const handleClickPayments = () => {
+    if (!totalPrice || !currentUser || !products) return;
+
+    const orderName = products[0].name.substring(0, 10) + "...";
+    console.log(orderName);
+    setModal(
+      <TossModal
+        amount={totalPrice}
+        customerEmail={currentUser.email}
+        customerName={currentUser.name}
+        orderName={orderName}
+      />
+    );
+  };
 
   return !currentUser ? (
     <div className="max-w-[1200px] mx-auto text-center">
@@ -73,7 +91,7 @@ function CartPage() {
       <h2 className="text-3xl">장바구니가 비었습니다...</h2>
     </div>
   ) : (
-    <div className="max-w-[1200px] mx-auto text-center">
+    <div className="max-w-[1200px] mx-auto text-center mb-10">
       <h2 className="text-3xl mb-5">장바구니</h2>
       <ul>
         {products?.map((product) => (
@@ -123,7 +141,10 @@ function CartPage() {
         ))}
       </ul>
       <p className="mt-5 text-2xl">총 합계 : \{totalPrice?.toLocaleString()}</p>
-      <button className="mt-5 rounded-md bg-pink-300 text-white text-xl w-56">
+      <button
+        onClick={handleClickPayments}
+        className="mt-5 rounded-md bg-pink-300 text-white text-xl w-56"
+      >
         결제하기
       </button>
     </div>
