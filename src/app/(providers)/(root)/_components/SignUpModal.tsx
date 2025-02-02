@@ -7,7 +7,7 @@ function SignUpModal() {
   const { handleSubmitSignUp, handleChange, errorText, formData } =
     useAuthForm();
   return (
-    <div>
+    <div className="w-80">
       <h1 className="text-center text-3xl  mb-5">회원가입</h1>
       <Image
         src="/logo.png"

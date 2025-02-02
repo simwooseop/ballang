@@ -75,7 +75,7 @@ function ChattingPage() {
     if (currentUser.isAdmin) {
       (async () => {
         try {
-          const { data: rooms } = await axios.get("http://localhost/api/rooms");
+          const { data: rooms } = await axios.get("http://localhost/rooms");
           const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
 
           const { data: users, error } = await supabase

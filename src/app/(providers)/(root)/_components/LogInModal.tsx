@@ -7,7 +7,7 @@ function LogInModal() {
   const { handleSubmitLogIn, handleChange, errorText, formData } =
     useAuthForm();
   return (
-    <div>
+    <div className="w-80">
       <h1 className="text-center text-3xl  mb-5">로그인</h1>
       <Image
         src="/logo.png"
