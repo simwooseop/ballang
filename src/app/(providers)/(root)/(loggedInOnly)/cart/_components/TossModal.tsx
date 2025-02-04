@@ -6,7 +6,7 @@ import {
 } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
 
-const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT;
 const customerKey = generateRandomString();
 
 function generateRandomString() {

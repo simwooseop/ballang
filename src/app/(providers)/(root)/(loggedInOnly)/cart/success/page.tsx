@@ -21,7 +21,7 @@ function Toss() {
 
       try {
         const response = await axios.post(
-          "http://smileb.kro.kr/toss",
+          "http://15.164.51.44:3000/toss",
           requestData,
           {
             headers: {
