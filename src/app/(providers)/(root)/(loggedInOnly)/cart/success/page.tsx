@@ -21,7 +21,7 @@ function Toss() {
 
       try {
         const response = await axios.post(
-          "https://rocky-savannah-73617-984b81b13be1.herokuapp.com/toss",
+          "http://15.164.51.44:3000/toss",
           requestData,
           {
             headers: {

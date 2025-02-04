@@ -10,7 +10,7 @@ import { Suspense, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { v4 } from "uuid";
 
-const socket = io("https://rocky-savannah-73617-984b81b13be1.herokuapp.com");
+const socket = io("http://15.164.51.44:3000");
 
 type Users = {
   id: string;
@@ -76,7 +76,7 @@ function Chat() {
       (async () => {
         try {
           const { data: rooms } = await axios.get(
-            "https://rocky-savannah-73617-984b81b13be1.herokuapp.com/rooms"
+            "http://15.164.51.44:3000/rooms"
           );
           const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
 
@@ -129,6 +129,14 @@ function Chat() {
 
   return (
     <div className="max-w-[350px] mx-auto flex items-start">
+      <button
+        onClick={async () => {
+          const { data } = await axios.get("http://15.164.51.44:3000/test");
+          console.log(data);
+        }}
+      >
+        test
+      </button>
       {currentUser.isAdmin && (
         <ul className="w-24 -mr-[1px] border border-black h-[600px] flex flex-col items-center">
           {customers &&
