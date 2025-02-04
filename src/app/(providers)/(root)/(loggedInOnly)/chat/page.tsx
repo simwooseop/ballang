@@ -78,8 +78,10 @@ function Chat() {
           const { data: rooms } = await axios.get(
             "https://ballang.kro.kr/rooms"
           );
-          const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
-
+          const roomIds = await rooms.map(
+            (room: { roomId: string }) => room.roomId
+          );
+          console.log(roomIds);
           const { data: users, error } = await supabase
             .from("profiles")
             .select("name, id")
@@ -129,14 +131,6 @@ function Chat() {
 
   return (
     <div className="max-w-[350px] mx-auto flex items-start">
-      <button
-        onClick={async () => {
-          const { data } = await axios.get("https://ballang.kro.kr/test");
-          console.log(data);
-        }}
-      >
-        test
-      </button>
       {currentUser.isAdmin && (
         <ul className="w-24 -mr-[1px] border border-black h-[600px] flex flex-col items-center">
           {customers &&
