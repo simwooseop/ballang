@@ -10,7 +10,7 @@ import { Suspense, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { v4 } from "uuid";
 
-const socket = io("http://15.164.51.44:3000");
+const socket = io("https://ballang.kro.kr");
 
 type Users = {
   id: string;
@@ -76,7 +76,7 @@ function Chat() {
       (async () => {
         try {
           const { data: rooms } = await axios.get(
-            "http://15.164.51.44:3000/rooms"
+            "https://ballang.kro.kr/rooms"
           );
           const roomIds = rooms.map((room: { roomId: string }) => room.roomId);
 
@@ -131,7 +131,7 @@ function Chat() {
     <div className="max-w-[350px] mx-auto flex items-start">
       <button
         onClick={async () => {
-          const { data } = await axios.get("http://15.164.51.44:3000/test");
+          const { data } = await axios.get("https://ballang.kro.kr/test");
           console.log(data);
         }}
       >
