@@ -2,14 +2,16 @@ import { cartApi } from "./cart";
 import { cartProductApi } from "./cartProduct";
 import chatApi from "./chat";
 import { productApi } from "./product";
-import { profilesApi } from "./profiles";
+import profileApi from "./profile";
+import roomApi from "./room";
 
 const api = {
   product: productApi,
   cart: cartApi,
-  profile: profilesApi,
+  profile: profileApi,
   cartProduct: cartProductApi,
   chat: chatApi,
+  room: roomApi,
 };
 
 export default api;
