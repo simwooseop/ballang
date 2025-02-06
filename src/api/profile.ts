@@ -13,4 +13,5 @@ const getProfile = async (userId: string) => {
   }
 };
 
-export const profilesApi = { getProfile };
+const profileApi = { getProfile };
+export default profileApi;

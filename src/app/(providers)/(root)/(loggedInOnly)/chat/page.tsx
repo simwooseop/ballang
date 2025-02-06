@@ -1,14 +1,13 @@
 "use client";
 
-import api from "@/api/api";
 import { supabase } from "@/supabase/supabase";
 import { useAuthStore } from "@/zustand/auth.store";
-import axios from "axios";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { v4 } from "uuid";
+import api from "./../../../../../api/api";
 
 const socket = io("https://ballang.kro.kr");
 
@@ -75,13 +74,10 @@ function Chat() {
     if (currentUser.isAdmin) {
       (async () => {
         try {
-          const { data: rooms } = await axios.get(
-            "https://ballang.kro.kr/rooms"
-          );
+          const rooms = await api.room.getRoomIds();
           const roomIds = await rooms.map(
             (room: { roomId: string }) => room.roomId
           );
-          console.log(roomIds);
           const { data: users, error } = await supabase
             .from("profiles")
             .select("name, id")
