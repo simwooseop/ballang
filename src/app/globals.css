@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "cookieRunFont";
-  src: url("/font/CookieRunRegular.otf");
-}
-
-body {
-  font-family: "cookieRunFont";
-}
-
 ::-webkit-scrollbar {
   display: none;
 }

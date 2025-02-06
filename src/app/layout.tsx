@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,6 +10,14 @@ export const metadata: Metadata = {
   },
 };
 
+const cookieRunFont = localFont({
+  src: [
+    {
+      path: "../fonts/CookieRunRegular.otf",
+    },
+  ],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -16,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className={`${cookieRunFont.className}`}>{children}</body>
     </html>
   );
 }
