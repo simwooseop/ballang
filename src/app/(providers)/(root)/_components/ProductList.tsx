@@ -1,11 +1,7 @@
 "use client";
 import api from "@/api/api";
 import { ProductPage } from "@/types/supabaseCustom";
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  UseInfiniteQueryResult,
-} from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
@@ -15,29 +11,37 @@ interface ProductListProps {
   brandId?: number;
 }
 
-interface InfiniteProduct {
+type InfiniteProduct = {
   pages: ProductPage[];
-  pageParams: [number];
-}
+  pageParams: number[];
+};
 
 function ProductList({ initialProducts, brandId }: ProductListProps) {
   const {
     data: products,
     hasNextPage,
     fetchNextPage,
-  }: UseInfiniteQueryResult<InfiniteProduct> = useInfiniteQuery({
+  } = useInfiniteQuery<
+    ProductPage,
+    Error,
+    InfiniteProduct,
+    [string, number | undefined],
+    number
+  >({
     queryKey: ["products", brandId],
-    queryFn: ({ pageParam }: { pageParam: number }) =>
-      api.product.getInfiniteProducts(pageParam, brandId),
+    queryFn: async ({ pageParam }) =>
+      api.product.getInfiniteProducts(
+        pageParam,
+        brandId
+      ) as Promise<ProductPage>,
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage && lastPage.hasMore ? allPages.length : undefined;
+      return lastPage?.hasMore ? allPages.length : null;
     },
     initialPageParam: 0,
     initialData: {
       pages: [initialProducts],
       pageParams: [0],
     },
-    placeholderData: keepPreviousData,
   });
 
   const { ref } = useInView({
