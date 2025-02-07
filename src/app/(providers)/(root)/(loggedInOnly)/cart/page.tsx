@@ -6,6 +6,7 @@ import { useAuthStore } from "@/zustand/auth.store";
 import useModalStore from "@/zustand/modal.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 import TossModal from "./_components/TossModal";
 
 function CartPage() {
@@ -96,48 +97,68 @@ function CartPage() {
       <h2 className="text-3xl mb-5">장바구니</h2>
       <ul>
         {products?.map((product) => (
-          <li
-            key={product.id}
-            className="border-y-4 -mb-1 border-pink-300 items-center flex gap-x-5 p-5"
-          >
-            <section className="w-[10vw] h-[15vw] relative">
-              <Image
-                className="cover"
-                src={product.imgSrc}
-                alt={product.name}
-                fill={true}
-              />
-            </section>
-
-            <section className="flex flex-col items-start">
-              <span className="block text-black/60 border-b border-black/30">
-                {product.brands.nameKr} / {product.brands.nameEn}
-              </span>
-              <span className="text-xl">{product.name}</span>
-
-              <span className="text-red-500 line-through mt-5">
-                \{product.originalPrice.toLocaleString()}
-              </span>
-              <span className="text-xl">\{product.price.toLocaleString()}</span>
-            </section>
-
-            <div className="ml-auto self-end flex flex-col gap-y-2">
-              <section className="text-2xl ml-auto grid grid-cols-6 bg-gradient-to-t from-gray-400 to-gray-100 rounded-2xl p-2 w-[6vw]">
-                <button onClick={() => handleClickDecreaseButton(product)}>
-                  -
-                </button>
-
-                <span className="col-span-4">{product.quantity}</span>
-
-                <button onClick={() => handleClickIncreaseButton(product)}>
-                  +
-                </button>
+          <li key={product.id}>
+            <Link
+              className="border-y-4 -mb-1 border-pink-300 items-center flex gap-x-5 p-5"
+              href={`/products/${product.id}`}
+            >
+              <section className="w-[10vw] h-[15vw] relative">
+                <Image
+                  className="cover"
+                  src={product.imgSrc}
+                  alt={product.name}
+                  fill={true}
+                />
               </section>
 
-              <span className="text-2xl">
-                \{(product.quantity * product.price).toLocaleString()}
-              </span>
-            </div>
+              <section className="flex flex-col items-start">
+                <Link
+                  href={{
+                    pathname: "/brands",
+                    query: { brandId: product.brandId },
+                  }}
+                  className="block text-black/60 border-b border-black/30"
+                >
+                  {product.brands.nameKr} / {product.brands.nameEn}
+                </Link>
+                <span className="text-xl">{product.name}</span>
+
+                <span className="text-red-500 line-through mt-5">
+                  \{product.originalPrice.toLocaleString()}
+                </span>
+                <span className="text-xl">
+                  \{product.price.toLocaleString()}
+                </span>
+              </section>
+
+              <div className="ml-auto self-end flex flex-col gap-y-2">
+                <section className="text-2xl ml-auto grid grid-cols-6 bg-gradient-to-t from-gray-400 to-gray-100 rounded-2xl p-2 w-[6vw]">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClickDecreaseButton(product);
+                    }}
+                  >
+                    -
+                  </button>
+
+                  <span className="col-span-4">{product.quantity}</span>
+
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClickIncreaseButton(product);
+                    }}
+                  >
+                    +
+                  </button>
+                </section>
+
+                <span className="text-2xl">
+                  \{(product.quantity * product.price).toLocaleString()}
+                </span>
+              </div>
+            </Link>
           </li>
         ))}
       </ul>
