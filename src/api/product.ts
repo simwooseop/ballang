@@ -2,22 +2,26 @@ import { supabase } from "@/supabase/supabase";
 import { Product, ProductPage } from "@/types/supabaseCustom";
 
 const getInfiniteProducts = async (page: number, brandId?: number) => {
-  const query = supabase
-    .from("products")
-    .select("*, brands(*)", { count: "exact" })
-    .range(page * 15, page * 15 + 14);
-  const filteredQuery = brandId ? query.eq("brandId", brandId) : query;
+  try {
+    let query = supabase
+      .from("products")
+      .select("*, brands(*)", { count: "exact" })
+      .range(page * 15, page * 15 + 14);
+    query = brandId ? query.eq("brandId", brandId) : query;
 
-  const { data, error, count } = await filteredQuery.returns<Product[]>();
+    const { data, error, count } = await query.returns<Product[]>();
 
-  if (error) return console.log(error);
+    if (error) return console.log(error);
 
-  const products = {
-    data,
-    hasMore: (page + 1) * 15 < count!,
-  };
+    const products = {
+      data,
+      hasMore: (page + 1) * 15 < count!,
+    };
 
-  return products as ProductPage;
+    return products as ProductPage;
+  } catch (error) {
+    throw new Error("fetch 실패 : " + error);
+  }
 };
 
 const getProducts = async () => {
