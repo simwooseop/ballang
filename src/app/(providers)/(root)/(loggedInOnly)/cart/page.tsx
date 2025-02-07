@@ -19,6 +19,7 @@ function CartPage() {
       (await api.cart.getCartProducts(currentUser!.id)) as CartProduct[],
     enabled: !!currentUser,
   });
+
   // 전체가격
   const totalPrice = products
     ?.map((product) => product.quantity * product.price)

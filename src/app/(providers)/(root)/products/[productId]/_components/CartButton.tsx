@@ -21,28 +21,28 @@ function CartButton({ productId }: AddCartButtonProps) {
 
   const { data: cart } = useQuery<CartsTable["Row"]>({
     queryKey: ["cart", currentUser],
-    queryFn: async () =>
-      (await api.cart.getCart(currentUser!.id)) as CartsTable["Row"],
+    queryFn: () =>
+      api.cart.getCart(currentUser!.id) as Promise<CartsTable["Row"]>,
     enabled: !!currentUser,
   });
 
   const { data: products } = useQuery<CartProduct[]>({
-    queryKey: ["cartProducts", currentUser],
-    queryFn: async () =>
-      (await api.cart.getCartProducts(currentUser!.id)) as CartProduct[],
-    enabled: !!currentUser,
+    queryKey: ["cartProducts", { currentUser, isLogIn }],
+    queryFn: () =>
+      api.cart.getCartProducts(currentUser!.id) as Promise<CartProduct[]>,
+    enabled: !!currentUser && !!isLogIn,
   });
 
   const { mutate: addCart } = useMutation({
-    mutationFn: async (cartProductData: CartProductData) =>
-      await api.cartProduct.addCart(cartProductData),
+    mutationFn: (cartProductData: CartProductData) =>
+      api.cartProduct.addCart(cartProductData),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["cartProducts"] }),
   });
 
   const { mutate: removeCart } = useMutation({
-    mutationFn: async (cartProductId: number) =>
-      await api.cartProduct.removeCart(cartProductId),
+    mutationFn: (cartProductId: number) =>
+      api.cartProduct.removeCart(cartProductId),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["cartProducts"] }),
   });
@@ -69,10 +69,9 @@ function CartButton({ productId }: AddCartButtonProps) {
     removeCart(cartProductId);
   };
 
-  if (!products) return null;
   if (!isAuthInitialized) return null;
 
-  return products.some((product) => product.id === productId) ? (
+  return products?.some((product) => product.id === productId) ? (
     <button
       onClick={handleClickRemoveCartButton}
       className="mt-auto rounded-md border-4 border-red-500 h-10"
