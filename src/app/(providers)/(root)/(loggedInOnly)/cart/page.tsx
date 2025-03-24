@@ -73,7 +73,6 @@ function CartPage() {
     if (!totalPrice || !currentUser || !products) return;
 
     const orderName = products[0].name.substring(0, 10) + "...";
-    console.log(orderName);
     setModal(
       <TossModal
         amount={totalPrice}

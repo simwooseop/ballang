@@ -53,8 +53,6 @@ const getCartProducts = async (userId: string) => {
       cartProductId: product.id,
     }));
 
-    console.log(result);
-
     return result as CartProduct[];
   } catch (error) {
     console.log(error);

@@ -28,7 +28,6 @@ const decreaseProduct = async (productData: ProductData) => {
 };
 
 const increaseProduct = async (productData: ProductData) => {
-  console.log(productData.cartProductId);
   const { data } = await supabase
     .from("cartProducts")
     .update({ quantity: productData.quantity + 1 })
